@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_post_client/providers/providers.dart';
 import 'package:get_post_client/widgets/custom_text_form_field.dart';
 
 // The body of the page
@@ -8,10 +9,10 @@ class HomePageBody extends StatefulWidget {
 }
 
 class _HomePageBodyState extends State<HomePageBody> {
-  String _ip = ""; // ip from TextFormField
   String _res = "Respuesta de la petición"; // response from provider
   String _buttonSelected = "GET";
   String _reqBody = "";
+  String _ip = "192.168.31.160:8080";
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class _HomePageBodyState extends State<HomePageBody> {
         _drawBodyField(),
         SizedBox(height: 15),
         ElevatedButton(
-          onPressed: () {},
+          onPressed: _getDatos,
           child: Text('Enviar'),
         ),
         SizedBox(height: 15),
@@ -54,6 +55,7 @@ class _HomePageBodyState extends State<HomePageBody> {
       },
       icon: Icons.vpn_key_rounded,
       keyboardType: TextInputType.url,
+      enabled: false,
       label: 'Dirección IP',
     );
   }
@@ -115,5 +117,16 @@ class _HomePageBodyState extends State<HomePageBody> {
         ),
       ),
     );
+  }
+  void _getDatos() async {
+    setState(() {
+      _res = 'Cargando...';
+    });
+    if (_buttonSelected == 'GET') {
+      String response = await ApiProvider.getDatos(_ip);
+      setState(() {
+        _res = response;
+      });
+    }
   }
 }
