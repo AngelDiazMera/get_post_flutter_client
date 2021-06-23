@@ -28,6 +28,11 @@ class _HomePageBodyState extends State<HomePageBody> {
         ),
         _drawBodyField(),
         SizedBox(height: 15),
+        ElevatedButton(
+          onPressed: () {},
+          child: Text('Enviar'),
+        ),
+        SizedBox(height: 15),
         Text(
           'Respuesta',
           style: TextStyle(
