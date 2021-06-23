@@ -7,9 +7,11 @@ class CustomTextFormField extends StatelessWidget {
   final IconData icon;
   final double width;
   final String initialValue;
+  final bool enabled;
 
   CustomTextFormField(
       {Key key,
+      this.enabled = true,
       @required this.label,
       @required this.keyboardType,
       @required this.onChanged,
@@ -24,6 +26,7 @@ class CustomTextFormField extends StatelessWidget {
       margin: EdgeInsets.only(top: 15),
       width: this.width,
       child: TextFormField(
+        enabled: this.enabled,
         keyboardType: this.keyboardType,
         initialValue: this.initialValue,
         textCapitalization: TextCapitalization.words,
