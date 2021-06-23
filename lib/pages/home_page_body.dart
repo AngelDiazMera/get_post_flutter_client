@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get_post_client/providers/providers.dart';
+
 import 'package:get_post_client/widgets/custom_text_form_field.dart';
 
 // The body of the page
@@ -8,10 +10,13 @@ class HomePageBody extends StatefulWidget {
 }
 
 class _HomePageBodyState extends State<HomePageBody> {
-  String _ip = ""; // ip from TextFormField
+  String _ip = "192.168.0.103"; // ip from TextFormField
   String _res = "Respuesta de la petición"; // response from provider
   String _buttonSelected = "GET";
   String _reqBody = "";
+  // Input controllers
+  TextEditingController _bodyTxt = TextEditingController(text: '');
+  TextEditingController _ipTxt = TextEditingController(text: '192.168.0.103');
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +34,7 @@ class _HomePageBodyState extends State<HomePageBody> {
         _drawBodyField(),
         SizedBox(height: 15),
         ElevatedButton(
-          onPressed: () {},
+          onPressed: _pedirDatos,
           child: Text('Enviar'),
         ),
         SizedBox(height: 15),
@@ -52,8 +57,10 @@ class _HomePageBodyState extends State<HomePageBody> {
           _ip = val;
         });
       },
+      enabled: false,
+      controller: _ipTxt,
       icon: Icons.vpn_key_rounded,
-      keyboardType: TextInputType.url,
+      keyboardType: TextInputType.number,
       label: 'Dirección IP',
     );
   }
@@ -66,6 +73,7 @@ class _HomePageBodyState extends State<HomePageBody> {
           _reqBody = val;
         });
       },
+      controller: _bodyTxt,
       icon: Icons.email,
       enabled: _buttonSelected == 'POST',
       keyboardType: TextInputType.text,
@@ -90,6 +98,8 @@ class _HomePageBodyState extends State<HomePageBody> {
       onPressed: () {
         setState(() {
           _buttonSelected = label;
+          _reqBody = '';
+          _bodyTxt.text = '';
         });
       },
       child: Text(label),
@@ -115,5 +125,17 @@ class _HomePageBodyState extends State<HomePageBody> {
         ),
       ),
     );
+  }
+
+  void _pedirDatos() async {
+    setState(() {
+      _res = 'Cargando...';
+    });
+    if (_buttonSelected == 'POST') {
+      String response = await ApiProvider.post(_ip, _reqBody);
+      setState(() {
+        _res = response;
+      });
+    }
   }
 }

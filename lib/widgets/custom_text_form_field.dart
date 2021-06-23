@@ -6,8 +6,8 @@ class CustomTextFormField extends StatelessWidget {
   final Function onChanged;
   final IconData icon;
   final double width;
-  final String initialValue;
   final bool enabled;
+  final TextEditingController controller;
 
   CustomTextFormField(
       {Key key,
@@ -17,7 +17,7 @@ class CustomTextFormField extends StatelessWidget {
       @required this.onChanged,
       this.icon,
       this.width = double.infinity,
-      this.initialValue = ''})
+      this.controller})
       : super(key: key);
 
   @override
@@ -25,10 +25,10 @@ class CustomTextFormField extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(top: 15),
       width: this.width,
-      child: TextFormField(
+      child: TextField(
         enabled: this.enabled,
+        controller: controller,
         keyboardType: this.keyboardType,
-        initialValue: this.initialValue,
         textCapitalization: TextCapitalization.words,
         decoration: InputDecoration(
           filled: true,
@@ -48,13 +48,6 @@ class CustomTextFormField extends StatelessWidget {
         ),
         cursorColor: Colors.black,
         onChanged: this.onChanged,
-        // The validator receives the text that the user has entered.
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'El campo "${this.label}" no puede estar vacío';
-          }
-          return null;
-        },
       ),
     );
   }
