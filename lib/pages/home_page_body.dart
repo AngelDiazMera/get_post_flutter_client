@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get_post_client/providers/providers.dart';
-
 import 'package:get_post_client/widgets/custom_text_form_field.dart';
 
 // The body of the page
@@ -10,7 +9,8 @@ class HomePageBody extends StatefulWidget {
 }
 
 class _HomePageBodyState extends State<HomePageBody> {
-  String _ip = "192.168.0.103"; // ip from TextFormField
+  String _ip =
+      "192.168.0.103"; // "192.168.31.160:8080";  // ip from TextFormField
   String _res = "Respuesta de la petición"; // response from provider
   String _buttonSelected = "GET";
   String _reqBody = "";
@@ -128,14 +128,17 @@ class _HomePageBodyState extends State<HomePageBody> {
   }
 
   void _pedirDatos() async {
+    String response;
     setState(() {
       _res = 'Cargando...';
     });
     if (_buttonSelected == 'POST') {
-      String response = await ApiProvider.post(_ip, _reqBody);
-      setState(() {
-        _res = response;
-      });
+      response = await ApiProvider.post(_ip, _reqBody);
+    } else {
+      response = await ApiProvider.getDatos(_ip);
     }
+    setState(() {
+      _res = response;
+    });
   }
 }
